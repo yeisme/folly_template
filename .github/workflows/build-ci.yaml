@@ -11,7 +11,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        build_type: [Debug, Release]
+        build_type: [debug, release]
 
     runs-on: ${{ matrix.os }}
 
@@ -20,33 +20,20 @@ jobs:
 
       - name: Install vcpkg
         uses: lukka/run-vcpkg@v11
-        with:
-          vcpkgGitCommitId: "2025.06.13"
 
       - name: Setup CMake
         uses: lukka/get-cmake@latest
 
-      - name: Setup Ninja
-        if: runner.os != 'Windows'
-        run: |
-          if [ "$RUNNER_OS" == "Linux" ]; then
-            sudo apt-get update && sudo apt-get install ninja-build
-          elif [ "$RUNNER_OS" == "macOS" ]; then
-            brew install ninja
-          fi
+      - name: Restore from cache and setup vcpkg executable and data files.
+        uses: lukka/run-vcpkg@v11
+        with:
+          vcpkgJsonGlob: "vcpkg.json"
 
-      - name: Configure CMake (Unix)
-        if: runner.os != 'Windows'
-        run: |
-          cmake --preset=default
-
-      - name: Configure CMake (Windows)
-        if: runner.os == 'Windows'
-        run: |
-          cmake --preset=default
-
-      - name: Build
-        run: cmake --build --preset=${{ matrix.build_type }}
+      - name: Configure and build with CMake
+        uses: lukka/run-cmake@v10
+        with:
+          configurePreset: "default"
+          buildPreset: "${{ matrix.build_type }}"
 
   docker:
     runs-on: ubuntu-latest

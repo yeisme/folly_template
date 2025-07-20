@@ -36,14 +36,5 @@
             "configurePreset": "default",
             "displayName": "Debug Build"
         }
-    ],
-    "testPresets": [
-        {
-            "name": "debug",
-            "configurePreset": "default",
-            "output": {
-                "outputOnFailure": true
-            }
-        }
     ]
 }
