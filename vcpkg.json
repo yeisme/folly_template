@@ -1,0 +1,10 @@
+{
+  "name": "folly-template",
+  "version": "1.0.0",
+  "description": "A template project using Facebook Folly library",
+  "dependencies": [
+    "folly",
+    "gtest",
+    "spdlog"
+  ]
+}
