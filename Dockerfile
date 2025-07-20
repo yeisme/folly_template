@@ -35,7 +35,7 @@ COPY . .
 
 # 构建项目
 RUN cmake --preset=default && \
-    cmake --build --preset=release
+    cmake --build --preset=debug
 
 # 设置入口点
 CMD ["./build/bin/folly_template"]
